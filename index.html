@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HPCCJS App Page</title>
+    <script src='https://unpkg.com/@hpcc-js/common'></script>
+    <script src='https://unpkg.com/@hpcc-js/util'></script>
+    <script src='https://unpkg.com/@hpcc-js/api'></script>
+    <script src='https://unpkg.com/@hpcc-js/chart'></script>
+    <script src='https://unpkg.com/@hpcc-js/layout'></script>
+    <script src='https://unpkg.com/@hpcc-js/html'></script>
+    <script src='https://unpkg.com/@hpcc-js/dgrid-shim'></script>
+    <script src='https://unpkg.com/@hpcc-js/dgrid'></script>
+    <script src='https://unpkg.com/@hpcc-js/composite'></script>
+    <script src='https://unpkg.com/@hpcc-js/phosphor-shim'></script>
+    <script src='https://unpkg.com/@hpcc-js/phosphor'></script>
+    <script src='https://unpkg.com/@hpcc-js/codemirror-shim'></script>
+    <script src='https://unpkg.com/@hpcc-js/codemirror'></script>
+    <script src='https://unpkg.com/@hpcc-js/graph'></script>
+    <script src='https://unpkg.com/@hpcc-js/map'></script>
+    <script src='https://unpkg.com/@hpcc-js/other'></script>
+    <script src='https://unpkg.com/@hpcc-js/preact-shim'></script>
+    <script src='https://unpkg.com/@hpcc-js/react'></script>
+    <script src='https://unpkg.com/@hpcc-js/timeline'></script>
+    <script src='https://unpkg.com/@hpcc-js/tree'></script>
+    <script>
+        window.hpccjs = Object.keys(window).filter(n=>n.indexOf('@hpcc-js/')===0).reduce((o,n)=>{o[n.split('/')[1]]=window[n];return o;},{});
+    </script>
+    <style>
+        :root{
+            --topnav-height: 40px;
+            --subnav-height: 0px;
+            --top-height: calc(var(--topnav-height) + var(--subnav-height));
+            --leftnav-width: 240px;
+            --rightnav-width: 140px;
+
+            --topnav-background: #BBB;
+            --subnav-background: #CCC;
+            --leftnav-background: #DDD;
+            --rightnav-background: #888;
+            --content-background: #FFF;
+        }
+        #topnav,
+        #leftnav,
+        #rightnav,
+        #subnav,
+        #content{
+            position: fixed;
+        }
+        #topnav{
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--topnav-height);
+            background: var(--topnav-background);
+        }
+        #subnav{
+            top: var(--topnav-height);
+            left: 0;
+            right: 0;
+            height: var(--subnav-height);
+            background: var(--subnav-background);
+        }
+        #leftnav{
+            top: var(--top-height);
+            left: 0;
+            width: var(--leftnav-width);
+            bottom: 0;
+            background: var(--leftnav-background);
+        }
+        #rightnav{
+            top: var(--top-height);
+            right: 0;
+            width: var(--rightnav-width);
+            bottom: 0;
+            background: var(--rightnav-background);
+        }
+        #content{
+            top: var(--top-height);
+            right: var(--rightnav-width);
+            width: calc(100% - var(--leftnav-width) - var(--rightnav-width));
+            bottom: 0;
+            background: var(--content-background);
+        }
+    </style>
+</head>
+<body>
+    <div id="topnav">topnav</div>
+    <div id="subnav">subnav</div>
+    <div id="leftnav">leftnav</div>
+    <div id="rightnav">rightnav</div>
+    <div id="content">content</div>
+</body>
+</html>
