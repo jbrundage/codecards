@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HPCCJS App Page</title>
-    <script src='https://unpkg.com/@hpcc-js/common'></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <script src='https://unpkg.com/@hpcc-js/common'></script>
     <script src='https://unpkg.com/@hpcc-js/util'></script>
     <script src='https://unpkg.com/@hpcc-js/api'></script>
     <script src='https://unpkg.com/@hpcc-js/chart'></script>
@@ -26,71 +29,461 @@
     <script src='https://unpkg.com/@hpcc-js/timeline'></script>
     <script src='https://unpkg.com/@hpcc-js/tree'></script>
     <script>
-        window.hpccjs = Object.keys(window).filter(n=>n.indexOf('@hpcc-js/')===0).reduce((o,n)=>{o[n.split('/')[1]]=window[n];return o;},{});
-    </script>
+        window.hpccjs = Object.keys(window).filter(n => n.indexOf('@hpcc-js/') === 0).reduce((o, n) => {
+            o[n.split('/')[1]] = window[n];
+            return o;
+        }, {});
+    </script> -->
     <style>
-        :root{
+        :root {
+            --font-family: "Roboto Mono";
+            --padding: 8px;
             --topnav-height: 40px;
-            --subnav-height: 0px;
-            --top-height: calc(var(--topnav-height) + var(--subnav-height));
-            --leftnav-width: 240px;
-            --rightnav-width: 140px;
+            --topnav-font: #FFF;
+            --topnav-color: #FFF;
+            --topnav-background: #025692;
+            --content-background: #DDD;
+            --card-background: #EEE;
+            --card-titlebar-height: 22px;
+        }
+        body{
+            font-family: var(--font-family);
+        }
 
-            --topnav-background: #BBB;
-            --subnav-background: #CCC;
-            --leftnav-background: #DDD;
-            --rightnav-background: #888;
-            --content-background: #FFF;
-        }
-        #topnav,
-        #leftnav,
-        #rightnav,
-        #subnav,
-        #content{
+        #topnav {
             position: fixed;
-        }
-        #topnav{
             top: 0;
             left: 0;
             right: 0;
             height: var(--topnav-height);
-            background: var(--topnav-background);
+            display: flex;
+            background-color: var(--topnav-background);
+            color: var(--topnav-color);
+            padding: var(--padding);
         }
-        #subnav{
-            top: var(--topnav-height);
-            left: 0;
-            right: 0;
-            height: var(--subnav-height);
-            background: var(--subnav-background);
+        #topnav > * {
+            height: calc(var(--topnav-height) - (var(--padding) * 2));
+            line-height: calc(var(--topnav-height) - (var(--padding) * 2));
+            margin-right: var(--padding);
+            padding: 0 var(--padding);
+            border: 0;
         }
-        #leftnav{
-            top: var(--top-height);
-            left: 0;
-            width: var(--leftnav-width);
-            bottom: 0;
-            background: var(--leftnav-background);
+
+        #content {
+            position: fixed;
+            top: 40px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            background-color: var(--content-background);
+            padding: var(--padding);
+            overflow-y: scroll;
+            overflow-x: hidden;
         }
-        #rightnav{
-            top: var(--top-height);
-            right: 0;
-            width: var(--rightnav-width);
-            bottom: 0;
-            background: var(--rightnav-background);
+
+        .code-card {
+            width: 320px;
+            height: 200px;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+            margin: 0 8px 8px 0;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--card-background);
         }
-        #content{
-            top: var(--top-height);
-            right: var(--rightnav-width);
-            width: calc(100% - var(--leftnav-width) - var(--rightnav-width));
-            bottom: 0;
-            background: var(--content-background);
+
+        .code-card>div {
+            display: flex;
+        }
+
+        .code-card>.code-titlebar {
+            display: flex;
+        }
+
+        .code-card>.code-titlebar>.code-title {
+            flex: 1;
+        }
+
+        .code-card>.code-titlebar>.code-buttons {
+            /* flex: 1; */
+        }
+
+        .code-card>.code-titlebar>.code-buttons>button {
+            float: right;
+        }
+
+        .code-card>.code-placeholder {
+            top: 28px;
+            left: 0px;
+            width: 320px;
+            height: calc(200px - var(--card-titlebar-height));
+        }
+
+        #card_size_wrapper {
+            position: fixed;
+            top: 8px;
+            right: 8px;
+        }
+
+        #search_input {}
+
+        .CodeMirror-hscrollbar::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            background-color: #F5F5F5;
+            width: 3px;
+            height: 3px;
+        }
+
+        .CodeMirror-hscrollbar::-webkit-scrollbar {
+            width: 6px;
+            background-color: #F5F5F5;
+            width: 3px;
+            height: 3px;
+        }
+
+        .CodeMirror-hscrollbar::-webkit-scrollbar-thumb,
+        .CodeMirror-vscrollbar::-webkit-scrollbar-thumb {
+            background-color: #000000;
+        }
+
+        .CodeMirror-vscrollbar::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            background-color: #F5F5F5;
+            width: 3px;
+            height: 3px;
+        }
+
+        .CodeMirror-vscrollbar::-webkit-scrollbar {
+            width: 6px;
+            background-color: #F5F5F5;
+            width: 3px;
+            height: 3px;
+        }
+        #maximized_card{
+            transition: width 0.4s;
         }
     </style>
 </head>
-<body>
-    <div id="topnav">topnav</div>
-    <div id="subnav">subnav</div>
-    <div id="leftnav">leftnav</div>
-    <div id="rightnav">rightnav</div>
-    <div id="content">content</div>
+
+<body onresize="resize()">
+    <div id="topnav">
+        <button id="fetch_btn" class="step-1" onclick=step1()>Fetch ECL Snippets</button>
+        <button id="cached_btn" class="step-1" onclick=step1_cached()>Use cached ECL Snippets</button>
+        <input id="search_input" class="step-2" placeholder="Filter by substring" />
+        <button id="filter_btn" class="step-2 fa fa-filter" onclick="search_filter(search_input.value)"></button>
+        <div id="filter_count_info">
+            <span>Showing</span>&nbsp;
+            <span id="filter_count">0</span>&nbsp;
+            <span>of</span>&nbsp;
+            <span id="total_count">0</span>
+        </div>   
+        <label id="card_size_wrapper" class="step-2" style="flex: 1; text-align: right;">
+            <span>Card Size:</span>
+            <select id="card_size" onchange="change_card_sizes(this.value)">
+                <option>320 x 200</option>
+                <option>320 x 240</option>
+                <option>384 x 288</option>
+                <option>480 x 320</option>
+                <option>640 x 480</option>
+                <option>800 x 600</option>
+                <option>854 x 480</option>
+                <option>768 x 576</option>
+                <option>800 x 600</option>
+                <option>1024 x 768</option>
+                <option>1152 x 864</option>
+            </select>
+        </label>
+    </div>
+    <div id="content" onscroll="contentScroll(this)">
+    </div>
+    <script>
+        const contentWrapper = document.querySelector("#content");
+        const cardSizeElement = document.querySelector("#card_size");
+        let g_data = {
+            "W20190924-161621": "IMPORT $.^ AS CR_SP;\r\n\r\n//some records are related to the same crime, but is related to different person\r\nall_records := CR_SP.clean_bo.File;\r\ntheft_records := all_records(RUBRICA = 'ESTUPRO DE VULNERAVEL (ART.217-A)' OR RUBRICA = 'A.I.-ESTUPRO DE VULNERAVEL (ART.217-A)');\r\n//first chance the hour to the hour interval of each record\r\nCR_SP.clean_bo.Layout colectHourInterval(CR_SP.clean_bo.File info) := TRANSFORM\r\n\tSELF.HORA_OCORRENCIA_BO := IF(info.HORA_OCORRENCIA_BO <=-1, -1, CR_SP.fGetHourInterval(info.HORA_OCORRENCIA_BO));\r\n\tSELF := info;\r\nEND;\r\nrecords_hour_interval := SORT(PROJECT(all_records(DESCR_TIPO_PESSOA IN CR_SP.person_type.crime_victim), colectHourInterval(LEFT)),HORA_OCORRENCIA_BO);\r\ntheft_hour_interval := SORT(PROJECT(theft_records(DESCR_TIPO_PESSOA IN CR_SP.person_type.crime_victim),colectHourInterval(LEFT)),HORA_OCORRENCIA_BO);\r\n//after this is made a group of hours.\r\n\r\nHOUR_CRIME := RECORD\r\n\trecords_hour_interval.HORA_OCORRENCIA_BO;\r\n\ttotal := COUNT(GROUP);\r\nEND;\r\n\r\nTHEFT_HOUR_CRIME := RECORD\r\n\ttheft_hour_interval.HORA_OCORRENCIA_BO;\r\n\ttotal := COUNT(GROUP);\r\nEND;\r\n\r\nhour_hotspot := TABLE(records_hour_interval,HOUR_CRIME,HORA_OCORRENCIA_BO);\r\ntheft_hour_hotspot :=  TABLE(theft_hour_interval,THEFT_HOUR_CRIME,HORA_OCORRENCIA_BO);\r\nOUTPUT(hour_hotspot);\r\nOUTPUT(theft_hour_hotspot);\r\n\r\n",
+            "W20190924-160902-3": "IMPORT STD;\nIMPORT DataPatterns;\nfilePath := '~asdf::test::NY_SampleInput.csv';\nds := DATASET(filePath, RECORDOF(filePath, LOOKUP), csv);\nprofileResults := DataPatterns.Profile(ds,,,,'best_ecl_types',5);\nOUTPUT(profileResults, ALL, NAMED('profileResults'));",
+            "W20190924-160431": "IMPORT $.^ AS CR_SP;\r\n\r\n//some records are related to the same crime, but is related to different person\r\nall_records := CR_SP.clean_bo.File;\r\ntheft_records := all_records(RUBRICA = 'ESTUPRO DE VULNERAVEL (ART.217-A)' OR RUBRICA = 'A.I.-ESTUPRO DE VULNERAVEL (ART.217-A)');\r\n//first chance the hour to the hour interval of each record\r\nCR_SP.clean_bo.Layout colectHourInterval(CR_SP.clean_bo.File info) := TRANSFORM\r\n\tSELF.HORA_OCORRENCIA_BO := IF(info.HORA_OCORRENCIA_BO <=-1, -1, CR_SP.fGetHourInterval(info.HORA_OCORRENCIA_BO));\r\n\tSELF := info;\r\nEND;\r\nrecords_hour_interval := SORT(PROJECT(all_records, colectHourInterval(LEFT)),HORA_OCORRENCIA_BO);\r\ntheft_hour_interval := SORT(PROJECT(theft_records,colectHourInterval(LEFT)),HORA_OCORRENCIA_BO);\r\n//after this is made a group of hours.\r\n\r\nHOUR_CRIME := RECORD\r\n\trecords_hour_interval.HORA_OCORRENCIA_BO;\r\n\ttotal := COUNT(GROUP);\r\nEND;\r\n\r\nTHEFT_HOUR_CRIME := RECORD\r\n\ttheft_hour_interval.HORA_OCORRENCIA_BO;\r\n\ttotal := COUNT(GROUP);\r\nEND;\r\n\r\nhour_hotspot := TABLE(records_hour_interval,HOUR_CRIME,HORA_OCORRENCIA_BO);\r\ntheft_hour_hotspot :=  TABLE(theft_hour_interval,THEFT_HOUR_CRIME,HORA_OCORRENCIA_BO);\r\nOUTPUT(hour_hotspot);\r\nOUTPUT(theft_hour_hotspot);\r\n\r\n",
+            "W20190924-135513": "OUTPUT('Hello World');\n\n<label> := <activity>;",
+            "W20190924-135442": "OUTPUT('Hello World');",
+            "W20190924-131122": "/*\n    Example code - use without restriction.  \n*/\nLayout_Person := RECORD\n  UNSIGNED1 PersonID;\n  STRING15  FirstName;\n  STRING25  LastName;\nEND;\n\nallPeople := DATASET([ {1,'Fred','Smith'},\n                       {2,'Joe','Blow'},\n                       {3,'Jane','Smith'}],Layout_Person);\n\nsomePeople := allPeople(LastName = 'Smith');\n\n//  Outputs  ---\nsomePeople;\n",
+            "W20190924-082456": "MyRec := RECORD\n\tINTEGER2 Value1;\n\tINTEGER2 Value2;\nEND;\n\nSomeFile := DATASET([{10,0},\n\t\t\t\t\t {20,0},\n\t\t\t\t\t {30,0},\n\t\t\t\t\t {40,0},\n\t\t\t\t\t {50,0}],MyRec);\n\nMyRec AddThem(MyRec L, MyRec R) := TRANSFORM\n\tSELF.Value2 := L.Value2 + R.Value1;\n\tSELF := R;\nEND;\n\nAddedRecs := ITERATE(SomeFile,AddThem(LEFT,RIGHT));\n\noutput(AddedRecs);\n\n/* Processes as:\n\tLEFT.Value2   RIGHT.Value1\n\t\t0 (0)\t\t\t1 (10)\t\t- 0 + 10 = 10\n\t\t1 (10)\t\t\t2 (20)\t\t- 10 + 20 = 30\n\t\t2 (30)\t\t\t3 (30)\t\t- 30 + 30 = 60\n\t\t3 (60)\t\t\t4 (40)\t\t- 60 + 40 = 100\n\t\t4 (100)\t\t\t5 (50)\t\t- 100 + 50 = 150\n\nAddedRecs result set is:\n\tRec#\tValue1\tValue2\n\t1\t\t10\t\t10\n\t2\t\t20\t\t30\t\n\t3\t\t30\t\t60\n\t4\t\t40\t\t100\n\t5\t\t50\t\t150\n*/",
+            "W20190923-201741": "\nIMPORT STD.DataPatterns;\n\nfilePath := '~stock_data::full_data';\nds := DATASET(filePath, RECORDOF(filePath, LOOKUP), flat);\nprofileResults := DataPatterns.Profile(ds);\nOUTPUT(profileResults, ALL, NAMED('profileResults'));\n    ",
+            "W20190923-201339": "\nIMPORT STD.DataPatterns;\n\nfilePath := '~hthor::erm::crimes_sp::clean::bo_20132';\nds := DATASET(filePath, RECORDOF(filePath, LOOKUP), flat);\nprofileResults := DataPatterns.Profile(ds);\nOUTPUT(profileResults, ALL, NAMED('profileResults'));\n    "
+        };
+        let g_count = 0;
+        let g_card_size = [320, 200];
+        let cachedDataLength = (localStorage.getItem("wuid_data") || "").length;
+        showStep(1);
+        if (cachedDataLength) {
+            step1_cached();
+        }
+
+        function step1() {
+            fetchWorkunits(1000, json => {
+                const wuidArr = json.WUQueryResponse.Workunits.ECLWorkunit.map(
+                    n => n.Wuid
+                );
+                console.log("wuidArr", wuidArr);
+                let responseCount = 0;
+                wuidArr.forEach(wuid => {
+                    fetchWUInfo(wuid, json => {
+                        responseCount++;
+                        g_data[wuid] = json.WUInfoResponse.Workunit.Query.Text;
+                        if (responseCount === wuidArr.length) {
+                            try {
+                                localStorage.setItem("wuid_data", JSON.stringify(g_data));
+                            } catch (e) {
+                                console.error("Error setting localStorage wuid_data");
+                                console.error(e);
+                            }
+                            let html = "";
+                            Object.keys(g_data).forEach(wuid => {
+                                html += insertCodeCard(wuid, g_data[wuid]);
+                            });
+                            contentWrapper.innerHTML = html;
+                            document.getElementById("filter_count").textContent = g_count;
+                            document.getElementById("total_count").textContent = Object.keys(g_data).length;
+                            showStep(2);
+                        }
+                    });
+                });
+            });
+        }
+
+        function step1_cached() {
+            let html = "";
+            let wuid_data_str = "";
+            let wuid_data;
+            try {
+                wuid_data_str = localStorage.getItem("wuid_data");
+                wuid_data = JSON.parse(wuid_data_str);
+            } catch (e) {
+                console.error("Error loading cached wuid_data");
+                console.groupCollapsed("Click to view what was in the localStorage for wuid_data");
+                console.log(wuid_data_str);
+                console.groupEnd();
+                console.error(e);
+            }
+            if (wuid_data) g_data = wuid_data;
+            g_count = 0;
+            Object.keys(g_data)
+                .forEach(wuid => {
+                    g_count++;
+                    html += insertCodeCard(wuid, g_data[wuid]);
+                });
+            contentWrapper.innerHTML = html;
+            document.getElementById("filter_count").textContent = g_count;
+            document.getElementById("total_count").textContent = Object.keys(g_data).length;
+            showStep(2);
+        }
+
+        function search_filter(str) {
+            g_count = 0;
+            const matchArr = Object.keys(g_data)
+                .filter(wuid => {
+                    return g_data[wuid].includes(str);
+                });
+            g_count = matchArr.length;
+            const selector = "#" + matchArr.join(',#');
+            Array.from(document.querySelectorAll(".code-card"))
+                .forEach(elm => {
+                    elm.style.display = "none";
+                })
+            document.querySelectorAll(selector)
+                .forEach(elm => {
+                    elm.style.display = "block";
+                    Array.from(elm.children).reverse()[0].style.display = "block";
+                })
+            document.getElementById("filter_count").textContent = g_count;
+            document.getElementById("total_count").textContent = Object.keys(g_data).length;
+        }
+
+        function insertCodeCard(name, code) {
+            const id = `ph-id-${name}`;
+            // setTimeout(function() {
+            //     new window["@hpcc-js/codemirror"].ECLEditor()
+            //         .target(id)
+            //         .ecl(code)
+            //         .render()
+            //         ;
+            // }, 100);
+            return `
+            <div class="code-card" id="${name}">
+                <div class="code-titlebar">
+                    <div class="code-title">${name}</div>
+                    <div class="code-buttons">
+                        <button id="${id}-maximize" class="fa fa-window-maximize" onclick="maximize('${id}')"></button>
+                        <button id="${id}-unmaximize" style="display:none;" class="fa fa-window-restore" onclick="unmaximize('${id}')"></button>
+                    </div>
+                </div>
+                <div id="${id}" class="code-placeholder" style="display:none;overflow:scroll">${code.split('\n').join('<br/>')}</div>
+            </div>
+        `;
+        }
+
+        function step2() {
+            showStep(2);
+        }
+
+        function step3() {
+            showStep(3);
+        }
+
+        function showStep(num) {
+            Array.from(document.querySelectorAll(".step-1,.step-2,.step-3")).forEach(
+                elm => (elm.style.display = "none")
+            );
+            Array.from(document.querySelectorAll(".step-" + num)).forEach(
+                elm => (elm.style.display = "block")
+            );
+        }
+
+        function fetchWUInfo(wuid, callback) {
+            fetch("https://play.hpccsystems.com:18010/WsWorkunits/WUInfo.json", {
+                    credentials: "include",
+                    headers: {
+                        accept: "*/*",
+                        "accept-language": "en-US,en;q=0.9",
+                        "cache-control": "no-cache",
+                        "content-type": "application/x-www-form-urlencoded",
+                        pragma: "no-cache"
+                    },
+                    referrer: "https://play.hpccsystems.com:18010/",
+                    referrerPolicy: "no-referrer-when-downgrade",
+                    body: "Wuid=" +
+                        wuid +
+                        "&TruncateEclTo64k=false&IncludeExceptions=false&IncludeGraphs=false&IncludeSourceFiles=false&IncludeResults=false&IncludeResultsViewNames=false&IncludeVariables=true&IncludeTimers=false&IncludeResourceURLs=false&IncludeDebugValues=false&IncludeApplicationValues=false&IncludeWorkflows=false&IncludeXmlSchemas=false&SuppressResultSchemas=true&rawxml_=true",
+                    method: "POST",
+                    mode: "cors"
+                })
+                .then(resp => resp.json())
+                .then(json => callback(json));
+        }
+
+        function fetchWorkunits(count, callback) {
+            fetch(`https://play.hpccsystems.com:18010/WsWorkunits/WUQuery.json?Count=${count}`)
+                .then(resp => resp.json())
+                .then(json => callback(json));
+        }
+
+        function change_card_sizes(resolutionStr) {
+            console.log(resolutionStr);
+            const sp = resolutionStr.split(" x ");
+            const w = parseInt(sp[0]);
+            const h = parseInt(sp[1]);
+            g_card_size = [w,h];
+            for (const card of document.querySelectorAll(".code-card")) {
+                card.style.width = w + "px";
+                card.style.height = h + "px";
+                const widget = card
+                    .children[1]
+                    .children[0]
+                    .children[0]
+                    .__data__;
+                console.log(widget);
+                widget.resize().render();
+            }
+        }
+
+        function maximize(id) {
+            document.getElementById("content").style.overflowY = "hidden";
+            const placeholder = document.getElementById(id);
+            const maxButton = document.getElementById(id + "-maximize");
+            const unmaxButton = document.getElementById(id + "-unmaximize");
+            maxButton.style.display = "none";
+            unmaxButton.style.display = "block";
+            const cardParent = placeholder.parentElement;
+            const cardRect = cardParent.getBoundingClientRect();
+            const maximized_card = document.createElement("div");
+            maximized_card.id = "maximized_card";
+            maximized_card.style.position = "fixed";
+            maximized_card.style.top = `${cardRect.top}px`;
+            maximized_card.style.left = `${cardRect.left}px`;
+            maximized_card.style.width = `${cardRect.width}px`;
+            maximized_card.style.height = `${cardRect.height}px`;
+            maximized_card.style.backgroundColor = "red";
+            maximized_card.style.opacity = 0.3;
+            document.body.appendChild(maximized_card);
+            setTimeout(function(){
+                maximized_card.style.top = `${0}px`;
+                maximized_card.style.left = `${0}px`;
+                maximized_card.style.width = `${window.innerWidth}px`;
+                maximized_card.style.height = `${window.innerHeight}px`;
+            },1000)
+
+            maximized_card.onclick = function(){
+                this.remove();
+            }
+
+            // const widget = placeholder
+            //     .children[0]
+            //     .children[0]
+            //     .__data__
+            //     ;
+            console.log(maximized_card);
+            // card.style.position = "fixed";
+            // card.style.zIndex = 1000;
+            // card.style.width = "auto";
+            // card.style.height = "auto";
+            // card.style.top = "0";
+            // card.style.right = "0";
+            // card.style.bottom = "0";
+            // card.style.left = "0";
+            // card.style.margin = "0";
+            // placeholder.style.width = "100%";
+            // placeholder.style.height = "calc(100% - var(--card-titlebar-height))";
+            // widget.resize().render();
+        }
+
+        function unmaximize(id) {
+            document.getElementById("content").style.overflowY = "scroll";
+            const maxButton = document.getElementById(id + "-maximize");
+            const unmaxButton = document.getElementById(id + "-unmaximize");
+            maxButton.style.display = "block";
+            unmaxButton.style.display = "none";
+            const placeholder = document.getElementById(id);
+            const card = placeholder.parentElement;
+            // const widget = placeholder
+            //     .children[0]
+            //     .children[0]
+            //     .__data__
+            //     ;
+            card.style.position = "";
+            card.style.zIndex = 1;
+            card.style.width = "";
+            card.style.height = "";
+            card.style.top = "";
+            card.style.right = "";
+            card.style.bottom = "";
+            card.style.left = "";
+            card.style.margin = "";
+            placeholder.style.width = "";
+            placeholder.style.height = "";
+            // widget.resize().render();
+        }
+        
+        function resize() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const p = 8;
+
+            const cols = Math.ceil(width / (g_card_size[0] + p));
+            const rows = Math.ceil(height / (g_card_size[1] + p));
+            console.log('cols === ',cols);
+            console.log('rows === ',rows);
+            const visibleCards = Array
+                .from(document.getElementById("content").children)
+                .slice(0,cols*rows)
+                ;
+            visibleCards.forEach(card=>{
+                card.querySelector('.code-placeholder').style.display = "block";
+            })
+        }
+        function contentScroll(elm){
+            console.log('elm.scrollTop === ',elm.scrollTop);
+        }
+    </script>
 </body>
+
 </html>
