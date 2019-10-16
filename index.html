@@ -44,13 +44,11 @@
         <input id="search_input" placeholder="Filter by substring" onkeyup="searchKeyup(this)"/>
         <button id="filter_btn" class="fa fa-filter" onclick="search_filter(search_input.value)"></button>
         <div id="filter_count_info">
-            <span>Showing</span>&nbsp;
             <span id="filter_count">0</span>&nbsp;
             <span>of</span>&nbsp;
             <span id="total_count">0</span>
-        </div>   
+        </div>
         <label id="card_size_wrapper" style="flex: 1; text-align: right;">
-            <span>Card Size:</span>
             <select id="card_size" onchange="change_card_sizes(this.value)">
                 <option>320 x 200</option>
                 <option>320 x 240</option>
