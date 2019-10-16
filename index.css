@@ -1,0 +1,107 @@
+:root {
+    /* --font-family: "Roboto Mono"; */
+    --font-family: "Lucida Console", Monaco, monospace;
+    --padding: 8px;
+    --topnav-height: 40px;
+    --topnav-font: #FFF;
+    --topnav-color: #FFF;
+    --topnav-background: #025692;
+    --content-background: #DDD;
+    --card-background: #EEE;
+    --card-titlebar-height: 22px;
+}
+body{
+    font-family: var(--font-family);
+}
+
+#topnav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--topnav-height);
+    display: flex;
+    background-color: var(--topnav-background);
+    color: var(--topnav-color);
+    padding: var(--padding);
+}
+#topnav > * {
+    height: calc(var(--topnav-height) - (var(--padding) * 2));
+    line-height: calc(var(--topnav-height) - (var(--padding) * 2));
+    margin-right: var(--padding);
+    padding: 0;
+    border: 0;
+}
+#topnav > :last-child {
+    margin-right: 0;
+}
+#topnav > input,
+#topnav > button {
+    padding: 0 var(--padding);
+}
+
+#content {
+    position: fixed;
+    top: 40px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: var(--content-background);
+    padding: var(--padding);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.code-card {
+    width: 320px;
+    height: 200px;
+    border: 1px solid lightgray;
+    position: relative;
+    float: left;
+    margin: 0 8px 8px 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--card-background);
+}
+
+#card_size_wrapper {
+    position: fixed;
+    top: 8px;
+    right: 8px;
+}
+
+#search_input {}
+
+.CodeMirror-hscrollbar::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+    width: 10px;
+    height: 10px;
+}
+
+.CodeMirror-hscrollbar::-webkit-scrollbar {
+    background-color: #F5F5F5;
+    width: 10px;
+    height: 10px;
+}
+
+.CodeMirror-hscrollbar::-webkit-scrollbar-thumb,
+.CodeMirror-vscrollbar::-webkit-scrollbar-thumb {
+    background-color: #000000;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+    width: 10px;
+    height: 10px;
+}
+
+.CodeMirror-vscrollbar::-webkit-scrollbar {
+    background-color: #F5F5F5;
+    width: 10px;
+    height: 10px;
+}
+#maximized_card{
+    transition: width 0.4s;
+}
