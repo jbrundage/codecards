@@ -131,13 +131,6 @@ function change_card_sizes(resolutionStr) {
     for (const card of document.querySelectorAll(".code-card")) {
         card.style.width = w + "px";
         card.style.height = h + "px";
-        const widget = card
-            .children[1]
-            .children[0]
-            .children[0]
-            .__data__;
-        console.log(widget);
-        widget.resize().render();
     }
 }
 
