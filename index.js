@@ -12,12 +12,19 @@ window.g_data = window.g_data || {
     "W20190923-201339": "\nIMPORT STD.DataPatterns;\n\nfilePath := '~hthor::erm::crimes_sp::clean::bo_20132';\nds := DATASET(filePath, RECORDOF(filePath, LOOKUP), flat);\nprofileResults := DataPatterns.Profile(ds);\nOUTPUT(profileResults, ALL, NAMED('profileResults'));\n    "
 };
 
+window.g_colors = [
+    "#f1c40f",
+    "#2c3e50",
+    "#7f8c8d",
+    "#8e44ad",
+    "#2980b9",
+    "#27ae60",
+];
+
 window.g_count = 0;
 window.g_card_size = [320, 200];
-window.cachedDataLength = (localStorage.getItem("wuid_data") || "").length;
-if (cachedDataLength) {
-    init_cards();
-}
+init_cards();
+
 function searchKeyup(input) {
     if(event.key === "Enter"){
         search_filter(search_input.value);
@@ -266,6 +273,12 @@ function log_dump(fileId){
     console.log(g_data[fileId]);
     console.groupEnd();
 }
+function showHoverButtons(canvas){
+    const rect = canvas.getBoundingClientRect();
+    let html = "";
+    html += `\
+    `;
+}
 function drawFileContents(canvas, str, substr, canvasWidth, canvasHeight){
     const lineWidth = canvasWidth;
     const maxLineHeight = 20;
@@ -283,7 +296,7 @@ function drawFileContents(canvas, str, substr, canvasWidth, canvasHeight){
     const charWidth = lineWidth / longestLine;
     const charHeight = lineHeight;
     const charColor = "#AAA";
-    const selectColor = "yellow";
+    const selectColor = g_colors[0];
     lineArr.forEach((line, lineIdx)=>{
         const charArr = line.split('');
         const _x = 0;
@@ -300,4 +313,36 @@ function drawFileContents(canvas, str, substr, canvasWidth, canvasHeight){
             ctx.fillRect(x,_y,w,_h);
         }
     });
+    const specialChars = [
+        {"char":"[", "color": g_colors[3]},
+        {"char":"]", "color": g_colors[3]},
+        {"char":"(", "color": g_colors[4]},
+        {"char":")", "color": g_colors[4]},
+        {"char":"{", "color": g_colors[2]},
+        {"char":"}", "color": g_colors[2]},
+        {"char":"'", "color": g_colors[1]},
+        {"char":'"', "color": g_colors[1]},
+        {"char":' ', "color": "white"}
+    ];
+    
+    lineArr.forEach((line, lineIdx)=>{
+        const y = lineHeight * lineIdx;
+        const h = charHeight;
+        specialChars.forEach(specialChar=>{
+            const locArr = substrIdxArr(line, specialChar.char);
+            locArr.forEach(loc=>{
+                const x = loc * charWidth;
+                const w = charWidth;
+                ctx.fillStyle = specialChar.color;
+                ctx.fillRect(x,y,w,h);
+            })
+        })
+    });
+}
+function substrIdxArr(str, char){
+    var indices = [];
+    for(var i=0; i<str.length;i++) {
+        if (str[i] === char) indices.push(i);
+    }
+    return indices;
 }
