@@ -105,14 +105,15 @@ function codeCardClick(canvas){
     div.style.left = 0;
     div.style.backgroundColor = "black";
     div.style.opacity = 0.2;
+    const w = window.innerWidth;
     const h = window.innerHeight;
     const modal = document.createElement("div");
     modal.id = "modal";
     modal.style.position = "fixed";
     modal.style.top = (h * 0.1) + "px";
-    modal.style.right =  "200px";
+    modal.style.right =  (w * 0.1) + "px";
     modal.style.bottom =  (h * 0.1) + "px";
-    modal.style.left =  "200px";
+    modal.style.left =  (w * 0.1) + "px";
     modal.style.backgroundColor = "white";
     div.onclick = function(){
         div.remove();
