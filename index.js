@@ -276,7 +276,8 @@ function showHoverButtons(canvas){
 }
 function drawFileContents(canvas, str, substr, canvasWidth, canvasHeight){
     const lineWidth = canvasWidth;
-    const maxLineHeight = 20;
+    const maxLineHeight = 16;
+    const maxCharWidth = 10;
     let lineHeight = canvasHeight / str.split('\n').length;
     lineHeight = lineHeight > maxLineHeight ? maxLineHeight : lineHeight;
     canvas.width = canvasWidth;
@@ -288,7 +289,8 @@ function drawFileContents(canvas, str, substr, canvasWidth, canvasHeight){
         const len = line.length;
         if(longestLine < len)longestLine = len;
     });
-    const charWidth = lineWidth / longestLine;
+    let charWidth = lineWidth / longestLine;
+    charWidth = charWidth > maxCharWidth ? maxCharWidth : charWidth;
     const charHeight = lineHeight;
     const charColor = "#AAA";
     const selectColor = g_colors[0];
