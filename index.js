@@ -131,7 +131,6 @@ function codeCardClick(canvas){
         ;
 }
 function change_card_sizes(resolutionStr) {
-    console.log(resolutionStr);
     const sp = resolutionStr.split(" x ");
     const w = parseInt(sp[0]);
     const h = parseInt(sp[1]);
@@ -222,7 +221,6 @@ function unmaximize(id) {
 function renderAllCards() {
     Array.from(document.querySelectorAll('canvas.code-card'))
         .forEach(canvas => {
-            console.log(canvas);
             const fileId = canvas.id;
             const fileStr = g_data[fileId] || "";
             const cw = 320;
@@ -230,10 +228,6 @@ function renderAllCards() {
             const lw = 200;
             const lh = ch / fileStr.split('\n').length;
             drawFileContents(canvas, fileStr, "", cw, ch, lw, lh);
-            console.groupCollapsed(canvas.id);
-            console.log(fileId);
-            console.log(g_data[fileId]);
-            console.groupEnd();
         })
         ;
 }
